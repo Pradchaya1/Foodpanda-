@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodpanda Super Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="test1.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <img src="foodpanda.jpg" alt="Foodpanda Logo" class="nav-logo">
+                <span class="nav-brand-text">foodpanda</span>
+                
+                <a href="javascript:void(0);" class="nav-item" id="tab-menu" onclick="switchTab('menu')" data-i18n="nav_menu">MENU</a>
+                <a href="javascript:void(0);" class="nav-item active" id="tab-dashboard" onclick="switchTab('dashboard')" data-i18n="nav_dash">DASHBOARD</a>
+                <a href="javascript:void(0);" class="nav-item" id="tab-member" onclick="switchTab('member')" data-i18n="nav_member">MEMBER</a>
+            </div>
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="lang-switch">
+                    <select onchange="changeLanguage(this.value)">
+                        <option value="th">TH</option>
+                        <option value="en">EN</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-wrapper">
+        
+        <div id="dashboard-view">
+            <header class="main-header">
+                <div class="logo-area">
+                    <img src="menu.png" alt="Dashboard Logo" class="header-logo">
+                    <div class="title-text">
+                        <span class="brand" data-i18n="header_title">Super Performance Insight</span>
+                        <h1 data-i18n="header_sub">Food and more, delivery</h1>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <div class="selection-area">
+                        <label for="city-select" data-i18n="lbl_city">เลือกพื้นที่วิเคราะห์:</label>
+                        <select id="city-select" onchange="updateDashboard(this.value)">
+                            <option value="all" data-i18n="opt_all_city">ทุกเมือง (Overall)</option>
+                            <option value="Multan">Multan</option>
+                            <option value="Lahore">Lahore</option>
+                            <option value="Karachi">Karachi</option>
+                            <option value="Peshawar">Peshawar</option>
+                            <option value="Islamabad">Islamabad</option>
+                        </select>
+                    </div>
+                    
+                    <div class="selection-area">
+                        <label for="restaurant-select" data-i18n="lbl_rest">เลือกร้านอาหาร:</label>
+                        <select id="restaurant-select" onchange="updateRestaurant(this.value)">
+                            <option value="all" data-i18n="opt_all_rest">ทุกร้าน (All Restaurants)</option>
+                            <option value="kfc">KFC</option>
+                            <option value="mcdonalds">McDonald's</option>
+                            <option value="pizzahut">Pizza Hut</option>
+                            <option value="burgerking">Burger King</option>
+                            <option value="subway">Subway</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <section class="unified-kpi-container">
+                <div class="kpi-section">
+                    <p class="label" data-i18n="kpi_rev">ยอดขายรวม (Gross Revenue)</p>
+                    <div class="value" id="revenue">Rs. 14,343,912</div>
+                    <div class="sub-label" data-i18n="kpi_rev_sub">● ข้อมูลอัปเดตล่าสุด</div>
+                </div>
+                <div class="kpi-section">
+                    <p class="label" data-i18n="kpi_ord">จำนวนคำสั่งซื้อ (Total Orders)</p>
+                    <div class="value" id="orders">6,000</div>
+                    <div class="sub-label" data-i18n="kpi_ord_sub">ออเดอร์ทั้งหมดในระบบ</div>
+                </div>
+                <div class="kpi-section">
+                    <p class="label" data-i18n="kpi_rat">คะแนนรีวิวเฉลี่ย (Rating)</p>
+                    <div class="value" id="rating">3.0</div>
+                    <div class="stars">★★★☆☆</div>
+                </div>
+            </section>
+
+            <section class="detail-grid">
+                <div class="card detail-card">
+                    <h3 data-i18n="top_menu">เมนูยอดนิยม 5 อันดับแรก (ตามยอดขาย)</h3>
+                    <ul id="top-menu" class="menu-list"></ul>
+                </div>
+            </section>
+
+            <section class="chart-section card">
+                <h3 data-i18n="chart_rev">เปรียบเทียบยอดขายรายเมือง (Revenue Comparison)</h3>
+                <canvas id="revenueChart"></canvas>
+            </section>
+
+            <section class="four-charts-grid">
+                <div class="card mini-chart">
+                    <h3 data-i18n="chart_pay">ช่องทางการชำระเงิน</h3>
+                    <canvas id="paymentChart"></canvas>
+                </div>
+                <div class="card mini-chart">
+                    <h3 data-i18n="chart_del">สถานะการจัดส่ง</h3>
+                    <canvas id="deliveryChart"></canvas>
+                </div>
+                <div class="card mini-chart">
+                    <h3 data-i18n="chart_cat">ยอดขายแยกตามหมวดหมู่</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div class="card mini-chart">
+                    <h3 data-i18n="chart_age">สัดส่วนลูกค้าตามช่วงวัย</h3>
+                    <canvas id="ageChart"></canvas>
+                </div>
+            </section>
+        </div>
+
+        <div id="menu-view" style="display: none;">
+            <header class="main-header">
+                <div class="logo-area">
+                    <img src="dashboard.jpg" alt="Menu Logo" class="header-logo"> 
+                    <div class="title-text">
+                        <span class="brand" data-i18n="menu_title">Menu Insights</span>
+                        <h1 data-i18n="menu_sub">การวิเคราะห์ข้อมูลเชิงลึกของเมนูอาหาร (Market Basket Analysis)</h1>
+                    </div>
+                </div>
+            </header>
+
+            <section class="menu-frame" style="margin-bottom: 25px;">
+                <h3 style="text-align: center; margin-bottom: 20px; color: var(--panda-color);" data-i18n="menu_gallery">ข้อมูลยอดขายรายเมนู (คลิกที่ชื่อเพื่อดูรายละเอียด)</h3>
+                <div id="menu-gallery" class="menu-gallery-container">
+                    </div>
+            </section>
+
+            <div style="margin-top: 20px;">
+                <div class="card" style="max-width: 800px; margin: 0 auto;">
+                    <h3 style="margin-bottom: 20px; color: var(--dark-grey); text-align: center;" data-i18n="menu_combo">Top 3 Combo ยอดฮิต (สั่งคู่กันบ่อยที่สุด)</h3>
+                    <div id="combo-list" style="display: flex; flex-direction: column; gap: 15px;">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="member-view" style="display: none;">
+            <header class="main-header">
+                <div class="logo-area">
+                    <img src="member.png" alt="Team Icon" class="header-team-icon">
+                    <div class="title-text">
+                        <span class="brand" data-i18n="member_title">Team Members</span>
+                        <h1 data-i18n="member_sub">รายชื่อสมาชิกผู้วิเคราะห์ข้อมูล (Data Analysts)</h1>
+                    </div>
+                </div>
+            </header>
+
+            <div class="member-grid">
+                <div class="member-card"><img src="EVE.jpg" alt="EVE" class="member-img"><h3 class="member-name" data-i18n="mem_1">อาฑิตญาภรณ์ สินเกต</h3><p class="member-role">6604053630545</p></div>
+                <div class="member-card"><img src="FOLK.jpg" alt="FOLK" class="member-img"><h3 class="member-name" data-i18n="mem_2">ภิรตา ดำรงรัตน์</h3><p class="member-role">6604053610239</p></div>
+                <div class="member-card"><img src="JJ.jpg" alt="JJ" class="member-img"><h3 class="member-name" data-i18n="mem_3">ปรัชญา ปิงยศ</h3><p class="member-role">6604053630243</p></div>
+                <div class="member-card"><img src="NUCH.jpg" alt="NUCH" class="member-img"><h3 class="member-name" data-i18n="mem_4">ปวีณ์นุช มัชวงค์</h3><p class="member-role">6604053630251</p></div>
+                <div class="member-card"><img src="PATTY.jpg" alt="PATTY" class="member-img"><h3 class="member-name" data-i18n="mem_5">ณัฐภรณ์ วิชางาม</h3><p class="member-role">6604053610048</p></div>
+                <div class="member-card"><img src="SUN.jpg" alt="SUN" class="member-img"><h3 class="member-name" data-i18n="mem_6">ศุภวิทย์ แดงสกล</h3><p class="member-role">6604053630456</p></div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="main-footer">
+        <p data-i18n="footer_text">© อาฑิตญาภรณ์ สินเกต, ภิรตา ดำรงรัตน์, ปรัชญา ปิงยศ, ปวีณ์นุช มัชวงค์, ณัฐภรณ์ วิชางาม, ศุภวิทย์ แดงสกล 2026</p>
+    </footer>
+
+    <div id="info-modal" class="info-modal-overlay">
+        <div class="info-modal-box">
+            <div class="info-modal-header">
+                <span data-i18n="info">Information</span>
+            </div>
+            <div class="info-modal-body">
+                <div class="modal-img-box">
+                    <img id="modal-img" src="" alt="">
+                </div>
+                <h4 id="modal-title">Name</h4>
+                <div id="modal-desc" class="modal-desc">Description</div>
+                <div class="info-modal-buttons">
+                    <button onclick="closeModal()" data-i18n="modal_close">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="test1.js"></script>
+</body>
+</html>

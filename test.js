@@ -167,7 +167,7 @@ const comboData = [
 
 const menuDetailData = [
     { id: 'pasta', name: 'PASTA', image: 'PASTA.jpg', rev: '2,925,553', qty: '1,222', price: '2,394', rating: '4.8', descKey: 'pasta_desc' },
-    { id: 'sandwich', name: 'SANDWICH', image: 'SANWICH.jpg', rev: '2,895,309', qty: '1,215', price: '2,383', rating: '4.7', descKey: 'sandwich_desc' },
+    { id: 'sandwich', name: 'SANDWICH', image: 'SANDWICH.jpg', rev: '2,895,309', qty: '1,215', price: '2,383', rating: '4.7', descKey: 'sandwich_desc' },
     { id: 'pizza', name: 'PIZZA', image: 'Pizza.jpg', rev: '2,883,673', qty: '1,202', price: '2,399', rating: '4.9', descKey: 'pizza_desc' },
     { id: 'fries', name: 'FRIES', image: 'FRIES.jpg', rev: '2,836,321', qty: '1,189', price: '2,385', rating: '4.6', descKey: 'fries_desc' },
     { id: 'burger', name: 'BURGER', image: 'BURGER.jpg', rev: '2,803,055', qty: '1,172', price: '2,392', rating: '4.8', descKey: 'burger_desc' }
@@ -339,3 +339,4 @@ window.onload = () => {
     renderMenuInsights();
 
 };
+
